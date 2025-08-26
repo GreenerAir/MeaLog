@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "75885691741",
+    "project_id": "hplus-mealog",
+    "storage_bucket": "hplus-mealog.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75885691741:android:dc2b67136f067be0469eb4",
+        "android_client_info": {
+          "package_name": "GreenerAIr.Hplus.MeaLog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA9fTCnG1DgWdDOA0podyaD4xKxmvvbwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
