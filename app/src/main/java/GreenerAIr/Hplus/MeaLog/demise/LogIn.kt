@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -61,7 +62,7 @@ fun LoginForm() {
         RoundedInputField(
             value = username,
             onValueChange = { username = it },
-            placeholder = "Username or Email"
+            placeholder = "Email"
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -73,6 +74,36 @@ fun LoginForm() {
             placeholder = "Password",
             isPassword = true
         )
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(
+            onClick = {
+                // This is where you manipulate/use the values.
+                // For example, call a login function
+                attemptLogin(username, password)
+
+                // Or you can clear the fields:
+                // username = ""
+                // password = ""
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Text("Log In")
+        }
+
+    }
+}
+
+private fun attemptLogin(email: String, password: String) {
+    if (email.isNotBlank() && password.isNotBlank()) {
+        // TODO: Make API call or validate credentials
+        // Where to put the verifications and log ins here?
+        println("Attempting login with: $email")
+    } else {
+        println("Email or password is empty!")
     }
 }
 
