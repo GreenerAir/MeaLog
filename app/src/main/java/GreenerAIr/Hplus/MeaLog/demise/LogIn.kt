@@ -1,6 +1,10 @@
 package GreenerAIr.Hplus.MeaLog.demise
 
-import android.R.style.Theme
+import GreenerAIr.Hplus.MeaLog.mainFrags.entrance
+import GreenerAIr.Hplus.MeaLog.resources.LoginForm
+import GreenerAIr.Hplus.MeaLog.resources.MeaLogTheme
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +17,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,124 +37,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class LogIn : ComponentActivity() {
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+
         setContent {
-            MeaLogTheme { // Now this will work!
+            MeaLogTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginForm()
+                    LoginForm(auth)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun LoginForm() {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Username field
-        RoundedInputField(
-            value = username,
-            onValueChange = { username = it },
-            placeholder = "Email"
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Password field
-        RoundedInputField(
-            value = password,
-            onValueChange = { password = it },
-            placeholder = "Password",
-            isPassword = true
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(
-            onClick = {
-                // This is where you manipulate/use the values.
-                // For example, call a login function
-                attemptLogin(username, password)
-
-                // Or you can clear the fields:
-                // username = ""
-                // password = ""
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text("Log In")
-        }
-
-    }
-}
-
-private fun attemptLogin(email: String, password: String) {
-    if (email.isNotBlank() && password.isNotBlank()) {
-        // TODO: Make API call or validate credentials
-        // Where to put the verifications and log ins here?
-        println("Attempting login with: $email")
-    } else {
-        println("Email or password is empty!")
-    }
-}
-
-@Composable
-fun RoundedInputField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    isPassword: Boolean = false
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-        ) {
-            TextField(
-                value = value,
-                onValueChange = onValueChange,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                placeholder = { Text(placeholder) },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                singleLine = true,
-                visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
-            )
         }
     }
 }
