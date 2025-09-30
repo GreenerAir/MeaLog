@@ -58,7 +58,6 @@ class entrance : ComponentActivity() {
 fun ElevatedButtonExample(onClick: () -> Unit) {
     var buttonText by remember { mutableStateOf("Honk") }
 
-    // Center the button on the screen
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -102,7 +101,6 @@ fun ElevatedButtonExample(onClick: () -> Unit) {
                 onClick()
                 buttonText = if (buttonText == "Honk") "Honked!" else "Honk"
             },
-            // Add some styling
             colors = ButtonDefaults.elevatedButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
