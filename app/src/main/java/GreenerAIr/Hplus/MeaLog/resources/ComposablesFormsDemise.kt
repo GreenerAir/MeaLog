@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,75 +57,82 @@ fun LoginForm(auth: FirebaseAuth) {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Image(
-            painter = painterResource(id = R.drawable.pec3), // Fixed the typo here
-            contentDescription = "Background",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop // or ContentScale.FillBounds, Fit, etc.
-        )
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+            verticalArrangement = Arrangement.Center){
 
-        Text(
-            text = "Login",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 24.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Error message
-        if (errorMessage.isNotEmpty()) {
-            Text(
-                text = errorMessage,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(bottom = 16.dp)
+            ThemeAwareLogo(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
             )
-        }
 
-        // Email field
-        RoundedInputField(
-            value = email,
-            onValueChange = { email = it },
-            placeholder = "Email"
-        )
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Password field
-        RoundedInputField(
-            value = password,
-            onValueChange = { password = it },
-            placeholder = "Password",
-            isPassword = true
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Column(
-            modifier = Modifier.height(120.dp).padding(24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            FloatingActionButton(
-                onClick = { attemptLogin(email, password, auth, context = context) { message -> errorMessage = message } },
-                modifier = Modifier.width(50.dp).height(50.dp),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Icon(Icons.Filled.Add,"LogIn")
+            if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
             }
 
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.primary,
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+            ){
+            // Email field
+                RoundedInputField(
+                    value = email,
+                    onValueChange = { email = it },
+                    placeholder = "Email adress"
+                )
 
-            FloatingActionButton(
-                onClick = { goToSignIn(context = context) },
-                modifier = Modifier.width(50.dp).height(50.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(12.dp)
+                Spacer(modifier = Modifier.height(6.dp))
 
-            ) {
-                Icon(Icons.Filled.ArrowForward,"LogIn")
+                // Password field
+                RoundedInputField(
+                    value = password,
+                    onValueChange = { password = it },
+                    placeholder = "Password",
+                    isPassword = true
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier.padding(24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                FloatingActionButton(
+                    onClick = { attemptLogin(email, password, auth, context = context) { message -> errorMessage = message } },
+                    modifier = Modifier.width(50.dp).height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    containerColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Icon(Icons.Filled.Add,"LogIn", tint = MaterialTheme.colorScheme.background)
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                FloatingActionButton(
+                    onClick = { goToSignIn(context = context) },
+                    modifier = Modifier.width(50.dp).height(50.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(12.dp)
+
+                ) {
+                    Icon(Icons.Filled.ArrowForward, "LogIn", tint = MaterialTheme.colorScheme.background)
+                }
             }
         }
+
+
     }
 }
 
@@ -139,21 +147,24 @@ fun SignInForm(auth: FirebaseAuth) {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Image(
-            painter = painterResource(id = R.drawable.pec3), // Fixed the typo here
-            contentDescription = "Background",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop // or ContentScale.FillBounds, Fit, etc.
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
 
-
-        Column(modifier = Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.Center) {
+            ThemeAwareLogo(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
 
             Text(
                 text = "Sign In",
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
@@ -163,7 +174,7 @@ fun SignInForm(auth: FirebaseAuth) {
             if (errorMessage.isNotEmpty()) {
                 Text(
                     text = errorMessage,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
             }
@@ -207,43 +218,42 @@ fun SignInForm(auth: FirebaseAuth) {
             Spacer(modifier = Modifier.height(20.dp))
 
             FloatingActionButton(
-                onClick = {
-                    attemptRegistration(
-                        username,
-                        email,
-                        password,
-                        passwordValidation,
-                        auth,
-                        context = context
-                    ) { message -> errorMessage = message }
-                },
-                modifier = Modifier.width(30.dp).height(56.dp),
-                shape = RoundedCornerShape(12.dp)
-
+                onClick = { attemptRegistration(username, email, password, passwordValidation, auth, context = context) { message -> errorMessage = message } },
+                modifier = Modifier.width(56.dp).height(56.dp),
+                shape = RoundedCornerShape(12.dp),
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Filled.Add, "LogIn")
+                Icon(
+                    Icons.Filled.Add,
+                    "LogIn",
+                    tint = MaterialTheme.colorScheme.background
+                )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
             FloatingActionButton(
                 onClick = { goToLogIn(context = context) },
-                modifier = Modifier.width(30.dp).height(56.dp),
+                modifier = Modifier.width(56.dp).height(56.dp),
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Icon(Icons.Filled.ArrowForward, "LogIn")
+                Icon(
+                    Icons.Filled.ArrowForward,
+                    "LogIn",
+                    tint = MaterialTheme.colorScheme.background
+                )
             }
         }
     }
 }
 
-private fun goToSignIn(context: Context){ // Button if you don't have an account
+private fun goToSignIn(context: Context){
     val intent = Intent(context, SignIn::class.java)
     context.startActivity(intent)
 }
 
-private fun goToLogIn(context: Context){ // Button if you have an account
+private fun goToLogIn(context: Context){
     val intent = Intent(context, LogIn::class.java)
     context.startActivity(intent)
 }
@@ -294,6 +304,43 @@ private fun attemptRegistration(username: String, email: String, password: Strin
 }
 
 @Composable
+fun DynamicFormImage(
+    lightFormResId: Int,
+    darkFormResId: Int,
+    modifier: Modifier = Modifier,
+    contentDescription: String = "Form Image",
+    contentScale: ContentScale = ContentScale.Fit,
+    darkTheme: Boolean = isSystemInDarkTheme()
+) {
+    val formImageResId = if (darkTheme) {
+        darkFormResId
+    } else {
+        lightFormResId
+    }
+
+    Image(
+        painter = painterResource(id = formImageResId),
+        contentDescription = contentDescription,
+        modifier = modifier,
+        contentScale = contentScale
+    )
+}
+
+@Composable
+fun ThemeAwareLogo(
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit
+) {
+    DynamicFormImage(
+        lightFormResId = R.drawable.lightmd,
+        darkFormResId = R.drawable.drkmode,
+        modifier = modifier,
+        contentScale = contentScale,
+        contentDescription = "App Logo"
+    )
+}
+
+@Composable
 fun RoundedInputField(
     value: String,
     onValueChange: (String) -> Unit,
@@ -306,25 +353,26 @@ fun RoundedInputField(
             .padding(vertical = 8.dp)
     ) {
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
+            modifier = Modifier.fillMaxWidth().height(56.dp),
             shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+            color = MaterialTheme.colorScheme.primary,
+            border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
         ) {
             TextField(
                 value = value,
                 onValueChange = onValueChange,
                 modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                placeholder = { Text(placeholder) },
+                placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.background) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
+                    disabledIndicatorColor = Color.Transparent,
+                    focusedTextColor = MaterialTheme.colorScheme.background,
+                    unfocusedTextColor = MaterialTheme.colorScheme.background,
+                    disabledTextColor = MaterialTheme.colorScheme.background
                 ),
                 singleLine = true,
                 visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None

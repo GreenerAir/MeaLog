@@ -52,17 +52,11 @@ class LogIn : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize Firebase Auth
         auth = Firebase.auth
 
         setContent {
             MeaLogTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    LoginForm(auth)
-                }
+                LoginForm(auth)
             }
         }
     }
